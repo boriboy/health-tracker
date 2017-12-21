@@ -10,6 +10,7 @@ const config = require('./config/configure.js')(app)     // init configuration
 
 // middleware
 const corsBypass = require('./middleware/api/cors_bypass.js')
+const errorHandler = require('./handlers/errors.js')
 
 // routes
 var index = require('./routes/index')
@@ -34,27 +35,9 @@ app.use('/api', corsBypass, apiRoutes)
 // todo: serve some static webpage
 app.use('/', index)
 
-// catch 404 and forward to error handler
-/*app.use(function(req, res, next) {
-  var err = new Error('Not Foundadadadadada');
-  err.status = 404;
-  next(err);
-});
-*/
-
 // error handler
-// app.use(function(err, req, res, next) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error');
-// });
+app.use(errorHandler);
 
 app.listen(3000, () => console.log('Example app listening on port 3000'))
-
-
 
 module.exports = app;
