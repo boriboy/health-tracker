@@ -1,21 +1,21 @@
-// requires
-// ======================== //
-
 // framework
 const express = require('express')
 const app = express()
 
 // config
-const config = require('./config/configure.js')(app)     // init configuration
+const config = require('./config/configure')(app)     // init configuration
 
 // middleware
-const corsBypass = require('./middleware/api/cors_bypass.js')
-const errorHandler = require('./handlers/errors.js')
+const corsBypass = require('./middleware/api/cors_bypass')
+const errorHandler = require('./handlers/errors')
 
 // routes
-var index = require('./routes/index')
-var users = require('./routes/users')
+const index = require('./routes/index')
+const users = require('./routes/users')
 const apiRoutes = require('./routes/api.js')
+
+// handlers
+const responseHandler = require('./handlers/response')
 
 // misc
 const path = require('path')
@@ -35,8 +35,8 @@ app.use('/api', corsBypass, apiRoutes)
 // todo: serve some static webpage
 app.use('/', index)
 
-// error handler
-app.use(errorHandler);
+// error & response handler
+app.use(errorHandler, responseHandler);
 
 app.listen(3000, () => console.log('Example app listening on port 3000'))
 
