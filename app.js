@@ -1,24 +1,18 @@
 // framework
 const express = require('express')
+const bodyParser = require('body-parser')
 const app = express()
+const mongoose = require('mongoose')
 
 // config
-const config = require('./config/configure')(app)     // init configuration
+const config = require('./config/configure')
+config.init(app)
 
 // files
 const fs = require('fs');
 
-// ----- [bootstrap] ----- //
-
 // bootstrap middleware
 const errorHandler = require('./handlers/errors')
-
-// bootstrap routes
-const index = require('./routes/index')
-const users = require('./routes/users')
-const apiRoutes = require('./routes/api')
-
-// bootstrap handlers
 
 // misc
 const path = require('path')
@@ -37,15 +31,38 @@ app.set('view engine', 'jade')
 // activate middleware chain
 app.use(express.static(path.join(__dirname, 'public')))
 
-// bypass origin check for api routes
-app.use('/api', apiRoutes)
+// bootstrap routes
+const index = require('./routes/index')
+const users = require('./routes/users')
+const apiRoutes = require('./routes/api')
 
-// todo: serve some static webpage
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
+// routes
+app.use('/api', apiRoutes)
 app.use('/', index)
 
-// error & response handler
+// error handler
 app.use(errorHandler);
 
-app.listen(3000, (err) => console.log('Example app listening on port 3000'))
+connect()
+	.on('error', console.log)
+	.on('disconnected', connect)
+	.once('open', listen);
+
+function listen () {
+	app.listen(3000, () => {
+		console.log('Example app listening on port 3000')
+})}
+
+// database connection
+function connect () {
+	var options = { server: { socketOptions: { keepAlive: 1 } } };
+	return mongoose.connect(config.db, options).connection;
+  }
 
 module.exports = app;
