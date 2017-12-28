@@ -11,7 +11,6 @@ const fs = require('fs');
 // ----- [bootstrap] ----- //
 
 // bootstrap middleware
-const globalMiddleware = require('./middleware/global')
 const errorHandler = require('./handlers/errors')
 
 // bootstrap routes
@@ -39,10 +38,10 @@ app.set('view engine', 'jade')
 app.use(express.static(path.join(__dirname, 'public')))
 
 // bypass origin check for api routes
-app.use('/api', globalMiddleware, apiRoutes)
+app.use('/api', apiRoutes)
 
 // todo: serve some static webpage
-app.use('/', globalMiddleware, index)
+app.use('/', index)
 
 // error & response handler
 app.use(errorHandler);
