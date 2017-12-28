@@ -5,5 +5,5 @@ module.exports = (err, req, res, next) => {
 	res.locals.error = err;
 
     // send customized json app response
-    response(res)
+    response(res, {}, err)
 }

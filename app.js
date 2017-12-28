@@ -5,22 +5,31 @@ const app = express()
 // config
 const config = require('./config/configure')(app)     // init configuration
 
-// middleware
-const corsBypass = require('./middleware/api/cors_bypass')
+// files
+const fs = require('fs');
+
+// ----- [bootstrap] ----- //
+
+// bootstrap middleware
+const globalMiddleware = require('./middleware/global')
 const errorHandler = require('./handlers/errors')
 
-// routes
+// bootstrap routes
 const index = require('./routes/index')
 const users = require('./routes/users')
-const apiRoutes = require('./routes/api.js')
+const apiRoutes = require('./routes/api')
 
-// handlers
-const responseHandler = require('./handlers/response')
+// bootstrap handlers
 
 // misc
 const path = require('path')
 
-// ======================== //
+// bootstrap models
+const models = path.join(__dirname, 'models');
+
+fs.readdirSync(models)
+  .filter(file => ~file.search(/^[^\.].*\.js$/))
+  .forEach(file => require(path.join(models, file)));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
@@ -30,14 +39,14 @@ app.set('view engine', 'jade')
 app.use(express.static(path.join(__dirname, 'public')))
 
 // bypass origin check for api routes
-app.use('/api', corsBypass, apiRoutes)
+app.use('/api', globalMiddleware, apiRoutes)
 
 // todo: serve some static webpage
-app.use('/', index)
+app.use('/', globalMiddleware, index)
 
 // error & response handler
-app.use(errorHandler, responseHandler);
+app.use(errorHandler);
 
-app.listen(3000, () => console.log('Example app listening on port 3000'))
+app.listen(3000, (err) => console.log('Example app listening on port 3000'))
 
 module.exports = app;
