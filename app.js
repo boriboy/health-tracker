@@ -64,7 +64,7 @@ function listen () {
 // database connection
 function connect () {
 	var options = { server: { socketOptions: { keepAlive: 1 } } };
-	return mongoose.connect(process.env.DATABASE_URL, options).connection;
+	return mongoose.connect(process.env.MONGODB_URI, options).connection;
   }
 
 module.exports = app;
