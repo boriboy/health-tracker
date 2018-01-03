@@ -1,4 +1,5 @@
 // framework
+require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
@@ -55,14 +56,15 @@ connect()
 	.once('open', listen);
 
 function listen () {
-	app.listen(3000, () => {
-		console.log('Example app listening on port 3000')
+	let port = process.env.PORT || 3000
+	app.listen(port, () => {
+		console.log('Example app listening on port ' + port)
 })}
 
 // database connection
 function connect () {
 	var options = { server: { socketOptions: { keepAlive: 1 } } };
-	return mongoose.connect(config.db, options).connection;
+	return mongoose.connect(process.env.DATABASE_URL, options).connection;
   }
 
 module.exports = app;

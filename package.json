@@ -11,6 +11,7 @@
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "dotenv": "^4.0.0",
     "express": "~4.15.5",
     "jade": "~1.11.0",
     "mongoose": "^4.13.7",
@@ -19,7 +20,8 @@
     "socket.io": "^2.0.4"
   },
   "keywords": [
-    "Health", "Server"
+    "Health",
+    "Server"
   ],
   "author": "Boris Berezner",
   "license": "MIT",
