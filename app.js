@@ -58,13 +58,13 @@ connect()
 function listen () {
 	let port = process.env.PORT || 3000
 	app.listen(port, () => {
-		console.log('Example app listening on port ' + port)
+		console.log('PocketCare server listening on port ' + port)
 })}
 
 // database connection
 function connect () {
-	var options = { server: { socketOptions: { keepAlive: 1 } } };
-	return mongoose.connect(process.env.MONGODB_URI, options).connection;
+	var options = { server: { socketOptions: { keepAlive: 1 } } }
+	return mongoose.connect(process.env.MONGODB_URI, options).connection
   }
 
 module.exports = app;

@@ -6,7 +6,7 @@ var exports = {}
 
 exports.create = (req, res, next) => {
     // todo add validation
-    let medObj = {title:req.query.title, frequency: req.query.freq, notes: req.query.notes}
+    let medObj = {title:req.body.title, frequency: req.body.freq, notes: req.body.notes}
 
     Medication.create(medObj, (err, med) => {
         if(err) return next(err)
