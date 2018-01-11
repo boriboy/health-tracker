@@ -30,7 +30,7 @@ exports.update = (req, res) => {
 
 exports.delete = (req, res, next) => {
     // todo add validation
-    Medication.remove({ _id: req.body.med }, err => {
+    Medication.remove({ _id: req.params.id }, err => {
         if(err)
             return next(err)
 
