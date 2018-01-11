@@ -17,15 +17,17 @@ router.use((req, res, next) => {
             }
             break;
 
-        default:
+        
         case 'GET':
             if (!req.query.hasOwnProperty('secret') || req.query.secret != secret) {
                 return next(new Error('Invalid api access key'))
             }
             break;
-    }
 
-    next()
+        default:
+            next()
+            break;
+    }
 })
 
 // routes
