@@ -28,8 +28,15 @@ exports.update = (req, res) => {
     // todo add validation
 }
 
-exports.delete = (req, res) => {
+exports.delete = (req, res, next) => {
     // todo add validation
+    Medication.remove({ _id: req.body.med }, err => {
+        if(err)
+            return next(err)
+
+        // success removal, return all current meds
+        exports.get(req, res, next)
+    })
 }
 
 module.exports = exports
