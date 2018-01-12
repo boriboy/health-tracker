@@ -28,6 +28,8 @@ router.use((req, res, next) => {
             next()
             break;
     }
+
+    next()
 })
 
 // routes
