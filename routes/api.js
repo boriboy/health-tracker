@@ -9,28 +9,17 @@ const medsController = require('../controllers/meds')
 router.use(require('../middleware/api/cors_bypass'))
 
 // api routes password protection middleware 
-router.use((req, res, next) => {
-    switch (req.method) {
-        case 'POST':
-            if (req.body.secret != secret) {
-                return next(new Error('Invalid api access key'))
-            }
-            break;
+// router.use((req, res, next) => {
+//     if(req.method === 'POST' || req.method === 'GET') {
+//         if (req.body.secret != secret) 
+//             return next(new Error('Invalid api access key'))
 
-        
-        case 'GET':
-            if (!req.query.hasOwnProperty('secret') || req.query.secret != secret) {
-                return next(new Error('Invalid api access key'))
-            }
-            break;
+//         if (!req.query.hasOwnProperty('secret') || req.query.secret != secret)
+//             return next(new Error('Invalid api access key'))
+//     }
 
-        default:
-            next()
-            break;
-    }
-
-    next()
-})
+//     next()
+// })
 
 // routes
 router.get('/ping', (req, res) => {
