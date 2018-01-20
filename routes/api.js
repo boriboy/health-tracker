@@ -26,11 +26,15 @@ router.get('/ping', (req, res) => {
     res.send('pong')
 })
 
-// med crud
+// med CRUD
 router.route('/med/:id?')
-    .get(medsController.get)
-    .post(medsController.create)
-    .put(medsController.update)
-    .delete(medsController.delete)
+    .get(medsController.medication.get)
+    .post(medsController.medication.create)
+    .put(medsController.medication.update)
+    .delete(medsController.medication.delete)
+
+// medication intake CRUD
+router.route('/med/take/:id/:date?')
+    .put(medsController.intake.take)
 
 module.exports = router;

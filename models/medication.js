@@ -1,15 +1,19 @@
 const mongoose = require('mongoose')
-
-// ----- [schema definitions] ----- //
 var Schema = mongoose.Schema
 
+// ----- [intake schema] ----- //
+let intakesSchema = new Schema({
+    created_at: Date
+})
 
 // ----- [medications schema] ----- //
 let medicationsSchema = new Schema({
     title:  String,
     frequency:  Number,
-    notes: [String]
+    notes: [String],
+    intakes: [intakesSchema]
 })
+
 
 // static
 medicationsSchema.statics = {
@@ -19,6 +23,5 @@ medicationsSchema.statics = {
 }
 
 
-// 
-
 var Medication = mongoose.model('Medication', medicationsSchema)
+var Intake = mongoose.model('Intake', medicationsSchema)
