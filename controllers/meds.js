@@ -5,63 +5,64 @@ const Intake = mongoose.model('Intake')
 
 var exports = {}
 
-module.exports = {
-    medication: {
-        create : (req, res, next) => {
-            // todo add validation
-            let medObj = {title:req.body.title, frequency: req.body.freq, notes: req.body.notes}
-        
-            Medication.create(medObj, (err, med) => {
-                if(err) return next(err)
-        
-                this.get(req, res, next)
-            })
-        },
+exports.medication = {
+    create : (req, res, next) => {
+        // todo add validation
+        let medObj = {title:req.body.title, frequency: req.body.freq, notes: req.body.notes}
     
-        get : (req, res, next) => {
-            // todo add validation
-            Medication.find({}, (err, meds) => {
-                if(err) return next(err)
-        
-                responseHandler(res, meds)
-            })
-        },
+        Medication.create(medObj, (err, med) => {
+            if(err) return next(err)
     
-        update : (req, res) => {
-            // todo add validation
-        },
-    
-        delete : (req, res, next) => {
-            // todo add validation
-            Medication.remove({ _id: req.params.id }, err => {
-                if(err)
-                    return next(err)
-        
-                // success removal, return all current meds
-                this.medication.get(req, res, next)
-            })
-        }
+            exports.medication.get(req, res, next)
+        })
     },
 
-    intake: {
-        take : (req, res, next) => {
-            Medication.findOne({ _id: req.params.id }, (err, med) => {
-                // handle error
-                if (err) return next(err)
+    get : (req, res, next) => {
+        // todo add validation
+        Medication.find({}, (err, meds) => {
+            if(err) return next(err)
+    
+            responseHandler(res, meds)
+        })
+    },
 
-                // assemble intake time
-                let date = req.params.date ? req.params.date : new Date()
+    update : (req, res) => {
+        // todo add validation
+    },
 
-                // create intake
-                med.intakes.addToSet({created_at: date})
-                med.save((err, med) => {
-                    // exit if error
-                    if (err) return next(err)
-
-                    // send back current medication instance
-                    responseHandler(res, med)
-                })
-            })
-        },
+    delete : (req, res, next) => {
+        // todo add validation
+        Medication.remove({ _id: req.params.id }, err => {
+            if(err)
+                return next(err)
+    
+            // success removal, return all current meds
+            exports.medication.get(req, res, next)
+        })
     }
 }
+
+exports.intake = {
+    take : (req, res, next) => {
+        Medication.findOne({ _id: req.params.id }, (err, med) => {
+            // handle error
+            if (err) return next(err)
+
+            // assemble intake time
+            let date = req.params.date ? req.params.date : new Date()
+
+            // create intake
+            med.intakes.addToSet({created_at: date})
+            med.save((err, med) => {
+                // exit if error
+                if (err) return next(err)
+
+                // send back current medication instance
+                responseHandler(res, med)
+            })
+        })
+    },
+}
+
+
+module.exports = exports
