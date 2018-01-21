@@ -38,7 +38,7 @@ module.exports = {
                     return next(err)
         
                 // success removal, return all current meds
-                this.get(req, res, next)
+                this.medication.get(req, res, next)
             })
         }
     },
