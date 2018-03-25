@@ -45,7 +45,7 @@ app.use(bodyParser.json())
 
 // routes
 app.use('/api', apiRoutes)
-app.use('/', index)
+app.use('/', express.static(path.join(__dirname, 'portfolio')))
 
 // error handler
 app.use(errorHandler);
